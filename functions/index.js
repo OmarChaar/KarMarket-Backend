@@ -70,7 +70,12 @@ exports.addUser = functions.https.onRequest(async (req, res) => {
         });
         res.json({success: true});
     }
-    else {
-        res.json(snapshot.data());
-    }
+});
+
+exports.getUser =  functions.https.onRequest(async (req, res) => {
+    const userId = req.body.uid;
+
+    const snapshot = await admin.firestore().collection("users").doc(userId).get();
+
+    res.json(snapshot.data());
 })
