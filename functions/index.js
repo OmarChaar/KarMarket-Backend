@@ -72,10 +72,18 @@ exports.addUser = functions.https.onRequest(async (req, res) => {
     }
 });
 
-exports.getUser =  functions.https.onRequest(async (req, res) => {
+exports.getUser = functions.https.onRequest(async (req, res) => {
     const userId = req.body.uid;
 
     const snapshot = await admin.firestore().collection("users").doc(userId).get();
 
     res.json(snapshot.data());
-})
+});
+
+exports.addVehicle = functions.https.onRequest(async (req, res) => {
+    const vehicle = req.body;
+
+    await admin.firestore().collection("vehicles").add(vehicle);
+
+    res.json({success: true});
+});
