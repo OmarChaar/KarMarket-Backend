@@ -1,12 +1,9 @@
 const functions = require("firebase-functions");
-
 const admin = require("firebase-admin");
 
 admin.initializeApp();
 
-/*
-    FETCH ALL DEALERSHIPS
-*/
+// FETCH ALL DEALERSHIPS
 exports.dealerships = functions.https.onRequest(async (req, res) => {
     const snapshot = await admin.firestore().collection("dealerships").get();
     
@@ -24,9 +21,14 @@ exports.dealerships = functions.https.onRequest(async (req, res) => {
 
     res.json(dealerships);
 });
+<<<<<<< HEAD
 /*
     FETCH SPECIFIC DEALERSHIP ACCORDING TO UNIQUE ID
 */
+=======
+
+// FETCH SPECIFIC DEALERSHIP ACCORDING TO UNIQUE ID
+>>>>>>> 47c71c88567e909aa62702c2125b8060deb6fc71
 exports.dealership = functions.https.onRequest(async (req, res) => {
     const snapshot = await admin.firestore().collection("dealerships").doc(req.body.id).get();
 
@@ -50,9 +52,7 @@ exports.dealershipVehicles = functions.https.onRequest(async (req, res) => {
     res.json(vehicles);
 });
 
-/*
-    FETCH ALL VEHICLES
-*/
+// FETCH ALL VEHICLES
 exports.vehicles = functions.https.onRequest(async (req, res) => {
     const snapshot = await admin.firestore().collection("vehicles").get();
     
@@ -70,6 +70,7 @@ exports.vehicles = functions.https.onRequest(async (req, res) => {
 
     res.json(vehicles);
 });
+<<<<<<< HEAD
 /*
     FETCH SPECIFIC VEHICLE ACCORDING TO UNIQUE ID
 */
@@ -77,4 +78,45 @@ exports.vehicle = functions.https.onRequest(async (req, res) => {
     const snapshot = await admin.firestore().collection("vehicles").doc(req.body.id).get();
 
     res.json({...snapshot.data(), id: req.body.id});
+=======
+
+// FETCH SPECIFIC VEHICLE ACCORDING TO UNIQUE ID
+exports.vehicle = functions.https.onRequest(async (req, res) => {
+    const snapshot = await admin.firestore().collection("vehicles").doc(req.body.id).get();
+
+    res.json(snapshot.data());
+});
+
+exports.addUser = functions.https.onRequest(async (req, res) => {
+    const userId = req.body.uid;
+    const userEmail = req.body.email;
+
+    const snapshot = await admin.firestore().collection("users").doc(userId).get();
+
+    if(!snapshot.exists) {
+        await admin.firestore().collection("users").doc(userId).set({
+            uid: userId,
+            email: userEmail,
+            displayName: '',
+            favorites: []
+        });
+        res.json({success: true});
+    }
+});
+
+exports.getUser = functions.https.onRequest(async (req, res) => {
+    const userId = req.body.uid;
+
+    const snapshot = await admin.firestore().collection("users").doc(userId).get();
+
+    res.json(snapshot.data());
+});
+
+exports.addVehicle = functions.https.onRequest(async (req, res) => {
+    const vehicle = req.body;
+
+    await admin.firestore().collection("vehicles").add(vehicle);
+
+    res.json({success: true});
+>>>>>>> 47c71c88567e909aa62702c2125b8060deb6fc71
 });
