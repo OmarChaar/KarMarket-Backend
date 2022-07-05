@@ -24,14 +24,30 @@ exports.dealerships = functions.https.onRequest(async (req, res) => {
 
     res.json(dealerships);
 });
-
 /*
     FETCH SPECIFIC DEALERSHIP ACCORDING TO UNIQUE ID
 */
 exports.dealership = functions.https.onRequest(async (req, res) => {
     const snapshot = await admin.firestore().collection("dealerships").doc(req.body.id).get();
 
-    res.json(snapshot.data());
+    res.json({...snapshot.data(), id: req.body.id});
+});
+
+/*
+    FETCH VEHICLES OF UNIQUE DEALERSHIP
+*/
+exports.dealershipVehicles = functions.https.onRequest(async (req, res) => {
+    const snapshot = await admin.firestore().collection("dealerships").doc(req.body.id).get();
+
+    const vehiclesArray = snapshot.data().vehicles;
+
+    const vehicles = [];
+
+    for(const vehicleID of vehiclesArray) {
+        const vehiclesSnapshot = await admin.firestore().collection("vehicles").doc(vehicleID).get();
+        vehicles.push({...vehiclesSnapshot.data(), id: vehiclesSnapshot.id});
+    }
+    res.json(vehicles);
 });
 
 /*
@@ -54,12 +70,11 @@ exports.vehicles = functions.https.onRequest(async (req, res) => {
 
     res.json(vehicles);
 });
-
 /*
     FETCH SPECIFIC VEHICLE ACCORDING TO UNIQUE ID
 */
 exports.vehicle = functions.https.onRequest(async (req, res) => {
     const snapshot = await admin.firestore().collection("vehicles").doc(req.body.id).get();
 
-    res.json(snapshot.data());
+    res.json({...snapshot.data(), id: req.body.id});
 });
