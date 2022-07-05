@@ -29,9 +29,7 @@ exports.dealership = functions.https.onRequest(async (req, res) => {
     res.json({...snapshot.data(), id: req.body.id});
 });
 
-/*
-    FETCH VEHICLES OF UNIQUE DEALERSHIP
-*/
+// FETCH VEHICLES OF UNIQUE DEALERSHIP
 exports.dealershipVehicles = functions.https.onRequest(async (req, res) => {
     const snapshot = await admin.firestore().collection("dealerships").doc(req.body.id).get();
 
