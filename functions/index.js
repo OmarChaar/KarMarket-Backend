@@ -21,14 +21,8 @@ exports.dealerships = functions.https.onRequest(async (req, res) => {
 
     res.json(dealerships);
 });
-<<<<<<< HEAD
-/*
-    FETCH SPECIFIC DEALERSHIP ACCORDING TO UNIQUE ID
-*/
-=======
 
 // FETCH SPECIFIC DEALERSHIP ACCORDING TO UNIQUE ID
->>>>>>> 47c71c88567e909aa62702c2125b8060deb6fc71
 exports.dealership = functions.https.onRequest(async (req, res) => {
     const snapshot = await admin.firestore().collection("dealerships").doc(req.body.id).get();
 
@@ -70,15 +64,6 @@ exports.vehicles = functions.https.onRequest(async (req, res) => {
 
     res.json(vehicles);
 });
-<<<<<<< HEAD
-/*
-    FETCH SPECIFIC VEHICLE ACCORDING TO UNIQUE ID
-*/
-exports.vehicle = functions.https.onRequest(async (req, res) => {
-    const snapshot = await admin.firestore().collection("vehicles").doc(req.body.id).get();
-
-    res.json({...snapshot.data(), id: req.body.id});
-=======
 
 // FETCH SPECIFIC VEHICLE ACCORDING TO UNIQUE ID
 exports.vehicle = functions.https.onRequest(async (req, res) => {
@@ -118,5 +103,4 @@ exports.addVehicle = functions.https.onRequest(async (req, res) => {
     await admin.firestore().collection("vehicles").add(vehicle);
 
     res.json({success: true});
->>>>>>> 47c71c88567e909aa62702c2125b8060deb6fc71
 });
